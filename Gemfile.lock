@@ -45,6 +45,3 @@ DEPENDENCIES
   redis
   remote_lock!
   rspec
-
-BUNDLED WITH
-   2.1.2
