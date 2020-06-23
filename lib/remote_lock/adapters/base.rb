@@ -2,7 +2,6 @@ require 'securerandom'
 
 module RemoteLock::Adapters
   class Base
-
     def initialize(connection)
       @connection = connection
     end
@@ -25,7 +24,7 @@ module RemoteLock::Adapters
         adapter.respond_to?(:delete)
     end
 
-    private
+  private
 
     # Globally unique ID for the current thread (or close enough)
     def uid
@@ -35,6 +34,5 @@ module RemoteLock::Adapters
     def thread_id
       Thread.current[:thread_uid] ||= SecureRandom.hex(4)
     end
-
   end
 end

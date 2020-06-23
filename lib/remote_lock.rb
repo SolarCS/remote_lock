@@ -53,5 +53,6 @@ class RemoteLock
 
 end
 
+require 'remote_lock/adapters/dalli'
 require 'remote_lock/adapters/memcached'
 require 'remote_lock/adapters/redis'

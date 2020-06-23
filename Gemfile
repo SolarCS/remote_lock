@@ -1,4 +1,7 @@
-source ENV.fetch('GEM_SOURCE', 'https://rubygems.org')
+# frozen_string_literal: true
 
-# Specify your gem's dependencies in memcache-lock.gemspec
+source 'https://rubygems.org'
+
 gemspec
+
+gem 'pry-byebug'

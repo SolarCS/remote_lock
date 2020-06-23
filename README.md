@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/HouseTrip/remote_lock.png)](https://travis-ci.org/HouseTrip/remote_lock) [![Code Climate](https://codeclimate.com/github/HouseTrip/remote_lock.png)](https://codeclimate.com/github/HouseTrip/remote_lock)
+This is a fork of [HouseTrip's remote_lock](https://github.com/HouseTrip/remote_lock) gem, adding support to Dalli as way to handle memcache connections.
 
 remote_lock
 ===========
@@ -8,17 +8,18 @@ also a fork from James Golick [memcache-lock](https://github.com/jamesgolick/mem
 
 This adds supports for memcache or redis as lock storage.
 
-Installation
-------------
-
-```shell
-gem install remote_lock
-```
-
 Initialization
 -------------
 
-* Lock using memcached:
+* Lock using Dalli:
+
+  ```ruby
+  # dalli = Rails.cache.dalli
+  # Or whatever way you have your memcache connection
+  $lock = RemoteLock.new(RemoteLock::Adapters::Dalli.new(dalli))
+  ```
+
+* Lock using Memcached:
 
   ```ruby
   # memcache = MemCache.new(YAML.load(File.read("/path/to/memcache/config")))
@@ -26,7 +27,7 @@ Initialization
   $lock = RemoteLock.new(RemoteLock::Adapters::Memcached.new(memcache))
   ```
 
-* Lock using redis:
+* Lock using Redis:
 
   ```ruby
   # redis = Redis.new
@@ -72,23 +73,3 @@ Options:
   ```
 
 For more info, see lib/remote_lock.rb. It's very straightforward to read.
-
-Note on Patches/Pull Requests
-=============================
-
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but
-   bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
-
-License
-============
-MIT licence. Copyright (c) 2013 HouseTrip Ltd.
-
-
-
-Based on the memcache-lock gem: https://github.com/jamesgolick/memcache-lock

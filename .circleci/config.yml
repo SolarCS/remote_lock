@@ -1,0 +1,34 @@
+version: 2
+
+# reusable steps
+fix_localhost: &fix_localhost
+  run:
+    name: localhost/127.0.0.1 fix
+    shell: sudo bash -eo pipefail
+    command: |
+      export LAST=$(tail -1 /etc/hosts)
+      echo "127.0.0.1    localhost" > /etc/hosts
+      echo $LAST >> /etc/hosts
+
+restore_source: &restore_source
+  restore_cache:
+    keys:
+      - remote_lock-source-v1-{{ .Branch }}-{{ .Revision }}
+      - remote_lock-source-v1-{{ .Branch }}
+      - remote_lock-source-v1-
+
+jobs:
+  build:
+    working_directory: /home/circleci/remote_lock
+    docker:
+      - image: circleci/ruby:2.6.1-node-browsers
+    steps:
+      - *fix_localhost
+      - *restore_source
+      - checkout
+      - save_cache:
+          key: remote_lock-source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
+      - run: bundle install --path=vendor/bundle --jobs=4 --retry=3
+      - run: bundle exec rspec
